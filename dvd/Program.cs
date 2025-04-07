@@ -1,30 +1,73 @@
 ﻿using Raylib_cs;
-using System.Data;
 using System.Numerics;
 
-namespace dvd
+class Program
 {
-    internal class Program
+    static void Main()
     {
-        static void Main(string[] args)
+        
+        Raylib.InitWindow(800, 600, "DVD");
+        Raylib.SetTargetFPS(60);
+
+      
+        Vector2 position = new Vector2(Raylib.GetScreenWidth() / 2 - 50, Raylib.GetScreenHeight() / 2 - 10);
+        Vector2 direction = new Vector2(1, 1); 
+        float speed = 30.0f;
+
+       
+        int screenWidth = Raylib.GetScreenWidth();
+        int screenHeight = Raylib.GetScreenHeight();
+
+        
+        int textWidth = Raylib.MeasureText("DVD", 40);
+        int textHeight = 40; 
+
+        while (!Raylib.WindowShouldClose())
         {
-            Vector2 position = new Vector2(100, 100);
-            Vector2 direction = new Vector2(1, 0);
-            float speed = 30f;
+            float deltaTime = Raylib.GetFrameTime();
 
+           
+            position += direction * speed * deltaTime;
 
-            Raylib.InitWindow(800, 800, "DVD");
-
-            while(Raylib.WindowShouldClose() == false)
+            
+            if (position.X + textWidth > screenWidth)
             {
-                Raylib.ClearBackground(Color.Black);
-                Raylib.DrawText(
-                position += direction * speed * Raylib.GetFrameTime();
-
-                
+                position.X = screenWidth - textWidth;
+                direction.X *= -1; 
             }
 
+           
+            if (position.X < 0)
+            {
+                position.X = 0;
+                direction.X *= -1; 
+            }
 
+            
+            if (position.Y + textHeight > screenHeight)
+            {
+                position.Y = screenHeight - textHeight;
+                direction.Y *= -1; 
+            }
+
+            
+            if (position.Y < 0)
+            {
+                position.Y = 0;
+                direction.Y *= -1; 
+            }
+
+            
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.Black);
+
+           
+            Raylib.DrawText("DVD", (int)position.X, (int)position.Y, 40, Color.Yellow);
+
+            Raylib.EndDrawing();
         }
+
+        
+        Raylib.CloseWindow();
     }
 }
